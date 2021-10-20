@@ -7,8 +7,11 @@ const userRoute = require("./routes/user");
 const postRoute = require("./routes/post");
 const categoryRoute = require("./routes/category");
 const multer = require("multer");
+const cors = require("cors");
+const path = require("path");
 
 dotenv.config();
+app.use("/images", express.static(path.join(__dirname, "/images")));
 
 mongoose
   .connect(process.env.MONGO_URL)
@@ -33,12 +36,13 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 });
 
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 
-app.listen("5000", () => {
-  console.log("Backend Server is Running");
+app.listen(5000, () => {
+  console.log("backend server is running");
 });
